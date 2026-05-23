@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BST CUET 2026 — Cheat Sheet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap');
+
+  :root {
+    --c1: #1a1a2e;   /* deep navy */
+    --c2: #16213e;
+    --acc: #e94560;  /* red accent */
+    --acc2: #0f3460; /* blue */
+    --acc3: #533483; /* purple */
+    --acc4: #05a081; /* teal */
+    --acc5: #c77800; /* amber */
+    --acc6: #1a6b3c; /* green */
+    --bg: #f5f5f0;
+    --card: #ffffff;
+    --text: #1a1a2e;
+    --muted: #555;
+    --border: #e0e0d8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 8.5pt;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: white; }
+    .page { page-break-after: always; padding: 6mm 7mm; }
+    .page:last-child { page-break-after: avoid; }
+    .no-print { display: none; }
+  }
+
+  .page {
+    width: 297mm;
+    min-height: 210mm;
+    padding: 7mm 8mm;
+    background: white;
+    margin: 0 auto 6mm;
+    box-shadow: 0 2px 12px rgba(0,0,0,.10);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, var(--c1) 0%, var(--acc2) 60%, var(--acc3) 100%);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  .header h1 { font-family: 'Rajdhani', sans-serif; font-size: 16pt; letter-spacing: 1px; }
+  .header .sub { font-size: 7pt; opacity: .85; }
+  .header .badge {
+    background: var(--acc);
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 7pt;
+    font-weight: 600;
+  }
+
+  /* ── SECTION HEADER ── */
+  .sh {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 9pt;
+    font-weight: 700;
+    color: white;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-bottom: 3px;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+  }
+  .sh.c1 { background: var(--acc); }
+  .sh.c2 { background: var(--acc2); }
+  .sh.c3 { background: var(--acc3); }
+  .sh.c4 { background: var(--acc4); }
+  .sh.c5 { background: var(--acc5); }
+  .sh.c6 { background: var(--acc6); }
+  .sh.c7 { background: #7b2d8b; }
+  .sh.c8 { background: #b5451b; }
+  .sh.c9 { background: #2c6b8a; }
+  .sh.c10 { background: #4a4a4a; }
+
+  /* ── GRID ── */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+  .grid4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 4px; }
+  .span2 { grid-column: span 2; }
+  .span3 { grid-column: span 3; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 6px;
+  }
+  .card.accent-left { border-left: 3px solid var(--acc); }
+  .card.accent-left.c2 { border-left-color: var(--acc2); }
+  .card.accent-left.c3 { border-left-color: var(--acc3); }
+  .card.accent-left.c4 { border-left-color: var(--acc4); }
+  .card.accent-left.c5 { border-left-color: var(--acc5); }
+  .card.accent-left.c6 { border-left-color: var(--acc6); }
+  .card.accent-left.c7 { border-left-color: #7b2d8b; }
+  .card.accent-left.c8 { border-left-color: #b5451b; }
+  .card.accent-left.c9 { border-left-color: #2c6b8a; }
+
+  /* ── TABLE ── */
+  table { width: 100%; border-collapse: collapse; font-size: 7.5pt; }
+  th {
+    background: #f0f0ea;
+    padding: 2px 4px;
+    text-align: left;
+    font-weight: 600;
+    border: 1px solid #ddd;
+    font-size: 7pt;
+  }
+  td { padding: 1.5px 4px; border: 1px solid #e8e8e2; vertical-align: top; }
+  tr:nth-child(even) td { background: #fafaf8; }
+
+  /* ── TAGS ── */
+  .tag {
+    display: inline-block;
+    padding: 1px 5px;
+    border-radius: 10px;
+    font-size: 6.5pt;
+    font-weight: 600;
+    margin: 1px;
+  }
+  .tag.red { background: #fdecea; color: #c62828; border: 1px solid #f5c6c6; }
+  .tag.blue { background: #e3f0ff; color: #1a5aad; border: 1px solid #b8d4f5; }
+  .tag.green { background: #e6f7ef; color: #1a6b3c; border: 1px solid #b2dfca; }
+  .tag.amber { background: #fff8e1; color: #b7700d; border: 1px solid #ffe082; }
+  .tag.purple { background: #f3e8ff; color: #6a0dad; border: 1px solid #d8b4fe; }
+  .tag.teal { background: #e0f7f4; color: #05a081; border: 1px solid #99e0d6; }
+
+  /* ── TEXT STYLES ── */
+  b { font-weight: 600; }
+  .kw { color: var(--acc); font-weight: 600; } /* keyword */
+  .kw2 { color: var(--acc2); font-weight: 600; }
+  .kw3 { color: var(--acc4); font-weight: 600; }
+  ul { padding-left: 10px; }
+  li { margin-bottom: 1px; }
+  .star { color: var(--acc5); font-weight: 700; }
+  .warn { color: var(--acc); font-weight: 600; }
+  .correct { color: var(--acc6); font-weight: 600; }
+  small { font-size: 7pt; color: var(--muted); }
+
+  /* ── FORMULA BOX ── */
+  .formula {
+    background: var(--c1);
+    color: #e8e8e8;
+    border-radius: 4px;
+    padding: 3px 7px;
+    font-family: 'Courier New', monospace;
+    font-size: 7.5pt;
+    margin: 2px 0;
+  }
+  .formula .var { color: #f9c74f; }
+
+  /* ── ALERT BOX ── */
+  .alert {
+    background: #fff3e0;
+    border-left: 3px solid var(--acc5);
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-size: 7.5pt;
+    margin: 2px 0;
+  }
+  .alert.red { background: #fdecea; border-color: var(--acc); }
+  .alert.green { background: #e6f7ef; border-color: var(--acc6); }
+
+  /* ── COMPARE BOX ── */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+  .compare .side {
+    padding: 3px 5px;
+    border-radius: 3px;
+    font-size: 7.5pt;
+  }
+  .compare .left { background: #fdecea; }
+  .compare .right { background: #e6f7ef; }
+  .compare .label { font-size: 6.5pt; font-weight: 700; margin-bottom: 2px; }
+
+  /* page number */
+  .pgnum {
+    text-align: right;
+    font-size: 6.5pt;
+    color: #999;
+    margin-top: 3px;
+    font-style: italic;
+  }
+
+  /* no-print button */
+  .no-print {
+    position: fixed;
+    top: 12px; right: 16px;
+    background: var(--acc);
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 10pt;
+    font-weight: 600;
+    z-index: 999;
+    box-shadow: 0 3px 10px rgba(0,0,0,.2);
+  }
+  .divider { height: 4px; }
+</style>
+</head>
+<body>
+
+<button class="no-print" onclick="window.print()">🖨 Print / Save PDF</button>
+
+<!-- ═══════════════════════════════════════════════════════ PAGE 1 ═══ -->
+<div class="page">
+  <div class="header">
+    <div>
+      <h1>BUSINESS STUDIES — CUET 2026 ⚡ CHEAT SHEET</h1>
+      <div class="sub">Full NCERT Syllabus · Class 11 &amp; 12 · All Key Facts, Formulas &amp; Common Mistakes</div>
+    </div>
+    <div class="badge">Ch 1–4</div>
+  </div>
+
+  <div class="grid3">
+
+    <!-- CH 1: MANAGEMENT -->
+    <div>
+      <div class="sh c1">Ch 1 — Nature &amp; Significance of Management</div>
+      <div class="card accent-left">
+        <b>Definition:</b> Getting things done <b>effectively &amp; efficiently</b> using human, physical &amp; financial resources.<br>
+        <span class="tag blue">Koontz &amp; O'Donnell</span> "Art of getting things done through &amp; with people in formally organised groups."<br>
+        <span class="kw">Effective</span> = Doing the <b>right things</b> (achieve goal) &nbsp;|&nbsp; <span class="kw">Efficient</span> = Doing things <b>right</b> (min cost/time)
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c1">Management: Art + Science + Profession?</div>
+      <div class="card accent-left">
+        <table>
+          <tr><th>Art</th><th>Science</th><th>Profession</th></tr>
+          <tr>
+            <td>Personal skill, creativity, judgement; perfected via experience</td>
+            <td>Systematised body; cause-effect; inexact/social science (less perfect)</td>
+            <td>Well-defined knowledge, restricted entry, professional assoc (FICCI/CII), ethical code, <b>service motive</b></td>
+          </tr>
+        </table>
+        <div class="alert">⚡ Management is BOTH Art AND Science</div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c1">Levels of Management</div>
+      <div class="card accent-left">
+        <table>
+          <tr><th>Level</th><th>Roles</th><th>Examples</th></tr>
+          <tr><td><b>Top</b></td><td>Goals, policies, strategies, long-term plans</td><td>CEO, MD, Board of Directors</td></tr>
+          <tr><td><b>Middle</b></td><td>Implement policies; responsible for dept ops &amp; first-line managers (NOT workers)</td><td>Plant Superintendent, <b>Dept Head</b></td></tr>
+          <tr><td><b>Supervisory/Op.</b></td><td>Supervise workers; working conditions; quality of output</td><td>Foreman, Supervisor</td></tr>
+        </table>
+        <div class="alert red">⚠ Plant Supt / Dept Head → Middle Level (NOT Top!) | Only Supt → Supervisory</div>
+        <small><b>Foreman</b> = "Pivot around whom revolves entire production"</small>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c1">Functions (POSDCON)</div>
+      <div class="card accent-left">
+        <table>
+          <tr><th>Fn.</th><th>Key Point</th></tr>
+          <tr><td><b>Planning</b></td><td>Ends + Means (What &amp; How); Primary fn; Prescriptive; closely related to <kw>Creativity &amp; Innovation</kw></td></tr>
+          <tr><td><b>Organising</b></td><td>WHO will do task; creates order from chaos; does NOT include "how"</td></tr>
+          <tr><td><b>Staffing</b></td><td>Most fundamental &amp; critical; generic fn; line as well as staff activity</td></tr>
+          <tr><td><b>Directing</b></td><td>Initiates actions; tells people what/when/how; functional foremanship = division of work</td></tr>
+          <tr><td><b>Controlling</b></td><td>Indispensable; Evaluative; checks decisions → desired actions; backward-looking</td></tr>
+        </table>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c1">Coordination — Essence of Management</div>
+      <div class="card accent-left">
+        Synchronises activities of different depts → <b>Unifies unrelated work into purposeful activity</b> → Group efforts<br>
+        <span class="tag blue">Functional Structure</span> Coordination DIFFICULT for multi-product firms<br>
+        <span class="tag green">Divisional Structure</span> Coordination EASY — all fn. related to product in one dept
+      </div>
+    </div>
+
+    <!-- CH 2: PRINCIPLES -->
+    <div>
+      <div class="sh c2">Ch 2 — Principles of Management</div>
+      <div class="card accent-left c2">
+        Principles = guidelines to action → <b>cause &amp; effect</b> → derive significance from <kw>UTILITY</kw><br>
+        <span class="kw">Less than perfect</span> — apply to human behaviour | <span class="kw">Contingent</span> — vary from situation to situation
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c2">F.W. Taylor — Scientific Management</div>
+      <div class="card accent-left c2">
+        <span class="tag blue">American Mechanical Engineer</span> <span class="tag amber">ASME President</span> <span class="tag red">Bethlehem Steel Co. (for Piece Rate Wage System)</span><br>
+        <b>Published:</b> "Principles of Scientific Management" — <kw>1911</kw><br>
+        <b>Definition:</b> "Knowing exactly what you want men to do and seeing that they do it in the best and cheapest way"<br><br>
+        <b>4 Principles:</b>
+        <ul>
+          <li><b>Science, not Rule of Thumb</b> — replace trial &amp; error with scientific study</li>
+          <li><b>Harmony, not Discord</b> — Mental Revolution; both mgmt &amp; worker; 2 interests = 1</li>
+          <li><b>Cooperation, not Individualism</b> — workers in mgmt decisions; reward suggestions</li>
+          <li><b>Development of each worker</b> — worker well-being = business prosperity</li>
+        </ul>
+        <div class="divider"></div>
+        <b>Techniques:</b>
+        <table>
+          <tr><th>Technique</th><th>Key Point</th></tr>
+          <tr><td>Functional Foremanship</td><td>8 foremen; Gang Boss = tools ready; Foreman = pivot of production</td></tr>
+          <tr><td>Method Study</td><td>Finding ONE best way to perform a task</td></tr>
+          <tr><td>Motion Study</td><td>Eliminate unnecessary motions of workers</td></tr>
+          <tr><td>Time Study</td><td>Standard time per task → determines no. of workers</td></tr>
+          <tr><td>Fatigue Study</td><td>Frequency of rest intervals</td></tr>
+          <tr><td>Differential Piece Wage</td><td>More sophisticated = more savings; original purpose at Bethlehem</td></tr>
+          <tr><td>Standardisation</td><td>Predetermined standards &amp; norms for efficient resource use</td></tr>
+          <tr><td>Mental Revolution</td><td>Complete Δ in attitude of both workers &amp; management</td></tr>
+        </table>
+        <div class="alert green">✅ Assembly line = discovered by Taylor → used by FORD for Model-T | Latest development in Sc. Mgmt = LEAN Manufacturing | Operations Research = developed in WW II</div>
+        <small><b>Taylor →</b> Workers &amp; Production efficiency | Focus on SHOP FLOOR</small>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c2">Henri Fayol — 14 Principles</div>
+      <div class="card accent-left c2">
+        <span class="tag green">French Mining Engineer</span> <b>"General &amp; Industrial Management"</b> → 1917 (French) / <kw>1949</kw> (English)<br>
+        Focus: <b>Managerial efficiency &amp; writing</b> (Top Management)<br>
+        <table>
+          <tr><th>#</th><th>Principle</th><th>Key Fact</th></tr>
+          <tr><td>1</td><td>Division of Work</td><td>Applies to ALL kinds of work; specialisation → efficiency</td></tr>
+          <tr><td>2</td><td>Authority &amp; Responsibility</td><td>Authority flows top→bottom</td></tr>
+          <tr><td>3</td><td>Discipline</td><td>Judicious applications of penalties</td></tr>
+          <tr><td>4</td><td>Unity of Command</td><td>One employee, <b>one boss</b> → Jeopardy if violated</td></tr>
+          <tr><td>5</td><td>Unity of Direction</td><td><b>One Head, One Plan</b> → ensures unity of actions &amp; coordination</td></tr>
+          <tr><td>6</td><td>Sub. of Ind. Interest</td><td>General interest &gt; individual interest</td></tr>
+          <tr><td>7</td><td>Remuneration</td><td>Fair wage for fair work</td></tr>
+          <tr><td>8</td><td>Centralisation</td><td>Degree of subordinate's role</td></tr>
+          <tr><td>9</td><td>Scalar Chain</td><td>Formal authority top→bottom; <b>Gang Plank</b> for quicker comm.</td></tr>
+          <tr><td>10–14</td><td>Order, Equity, Stability of Personnel, Initiative, Esprit de Corps</td><td>Team spirit = "Union is strength"</td></tr>
+        </table>
+        <div class="alert red">⚠ Unity of Command ≠ Unity of Direction | Command = one boss | Direction = one plan</div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c2">Taylor vs Fayol</div>
+      <div class="card accent-left c2">
+        <table>
+          <tr><th>Basis</th><th>Taylor</th><th>Fayol</th></tr>
+          <tr><td>Origin</td><td>American Mechanical Eng.</td><td>French Mining Eng.</td></tr>
+          <tr><td>Focus</td><td>Workers &amp; Production (Shop Floor)</td><td>Managerial efficiency (Top Mgmt)</td></tr>
+          <tr><td>Approach</td><td>Inductive (personal experience)</td><td>Deductive (analysis of situations)</td></tr>
+          <tr><td>Key work</td><td>Principles of Sc. Mgmt (1911)</td><td>Gen. &amp; Ind. Mgmt (1917/1949)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- CH 3 + 4 -->
+    <div>
+      <div class="sh c3">Ch 3 — Business Environment</div>
+      <div class="card accent-left c3">
+        <b>Def:</b> Sum total of ALL external forces affecting a firm. <span class="kw">Dynamic</span> — keeps changing (tech, consumer preferences, competition).<br><br>
+        <b>Features:</b> Totality of external forces | Specific &amp; general forces | Inter-related | <span class="kw">Dynamic</span> | <span class="kw">Uncertain</span> | <span class="kw">Complex</span> | Far-reaching impact
+      </div>
+      <div class="divider"></div>
+      <div class="card accent-left c3">
+        <b>PESTLE Components:</b>
+        <table>
+          <tr><th>Type</th><th>Key Facts</th></tr>
+          <tr><td>Political/Legal</td><td>Tax compliance (eco + social env); laws &amp; regulations</td></tr>
+          <tr><td>Economic</td><td>Interest, inflation, GDP; <b>PNB took Oriental Bank</b> → Economic env</td></tr>
+          <tr><td>Social</td><td>Customs, traditions, values</td></tr>
+          <tr><td>Technological</td><td>New products; ITES = data processing, customer support</td></tr>
+          <tr><td>Natural</td><td>Climate, geography, resources</td></tr>
+        </table>
+      </div>
+      <div class="divider"></div>
+      <div class="card accent-left c3">
+        <b>Post-1991 Economic Reforms:</b>
+        <ul>
+          <li><b>Liberalisation:</b> Simplified procedures for imports &amp; exports; Compulsory licensing → <kw>6 industries</kw>; Public sector → <kw>4 industries</kw> (strategic)</li>
+          <li><b>Privatisation:</b> Reduction of govt involvement; sick PSUs → BIFR</li>
+          <li><b>Globalisation:</b> Integration with world economy</li>
+        </ul>
+        <b>Demonetisation:</b> Real estate prices fell | Hoarders' wealth fell | <b>No effect on Public Sector Wealth</b>
+      </div>
+      <div class="divider"></div>
+      <div class="card accent-left c3">
+        <b>Industry Clusters:</b>
+        <table>
+          <tr><td>Surat &amp; Mumbai</td><td>Gems &amp; Jewellery</td></tr>
+          <tr><td>Chennai, Agra, Kolkata</td><td>Leather Products</td></tr>
+          <tr><td>Ludhiana</td><td>Knitwear Cluster</td></tr>
+          <tr><td>Tamil Nadu</td><td>Hosiery Cluster</td></tr>
+          <tr><td>Maharashtra</td><td>Paithani Sarees</td></tr>
+        </table>
+        <small>AGMARK = Agricultural Marketing | NGOs = independent of govt, own constitution</small>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c5">Ch 4 — Planning</div>
+      <div class="card accent-left c5">
+        <b>Def:</b> Setting objectives &amp; deciding in advance how to achieve them. Concerned with <kw>BOTH ends &amp; means</kw>.<br>
+        <b>Primary function</b> of management | <span class="kw">Prescriptive</span> | Closely related to <span class="kw">Creativity &amp; Innovation ONLY</span>
+      </div>
+      <div class="divider"></div>
+      <div class="card accent-left c5">
+        <b>Types of Plans:</b>
+        <table>
+          <tr><th>Type</th><th>Key Fact</th></tr>
+          <tr><td><b>Objectives</b></td><td>Qualitative &amp; Quantitative, time-bound. Policies ≠ Objectives</td></tr>
+          <tr><td><b>Strategy</b></td><td>Broad contours → long run; top level mgmt; liaison with outside world</td></tr>
+          <tr><td><b>Policy</b></td><td>General guidelines for decision making. NOT objectives. Interlinked with Procedure</td></tr>
+          <tr><td><b>Procedure</b></td><td>Exact manner to perform a task; steps</td></tr>
+          <tr><td><b>Rules</b></td><td><b>Most rigid</b> plan</td></tr>
+          <tr><td><b>Programme</b></td><td>Detailed statements: obj + policy + procedure + rules + resources + budget; sequential learning</td></tr>
+          <tr><td><b>Budget</b></td><td>Plan in numerical terms</td></tr>
+          <tr><td><b>Method</b></td><td>One best way; higher-level mgmt orientation programmes = Method = Type of Plan</td></tr>
+        </table>
+      </div>
+      <div class="divider"></div>
+      <div class="card accent-left c5">
+        <b>Limitations:</b> Leads to rigidity | Not work in dynamic env | <span class="kw">Reduces creativity</span> | Costly | Time-consuming | No guarantee of success<br>
+        <div class="alert">⚡ Planning without Controlling is meaningless | Management by Exception = dealing with SIGNIFICANT deviations only</div>
+      </div>
+    </div>
+
+  </div><!-- end grid3 -->
+  <div class="pgnum">Page 1 of 10 — BST CUET 2026 Cheat Sheet</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ PAGE 2 ═══ -->
+<div class="page">
+  <div class="header">
+    <div><h1>BST CUET 2026 ⚡ Cheat Sheet</h1><div class="sub">Organising · Staffing · Directing</div></div>
+    <div class="badge">Ch 5–7</div>
+  </div>
+
+  <div class="grid3">
+
+    <!-- CH 5: ORGANISING -->
+    <div>
+      <div class="sh c4">Ch 5 — Organising</div>
+      <div class="card accent-left c4">
+        Creates <kw>order out of chaos</kw>, removes conflicts, suitable for teamwork.<br>
+        Does <span class="warn">NOT</span> include "How will it be done" (that's Planning).<br>
+        Process: Identification &amp; division of work → Departmentation → Assignment of duties → Establishing reporting relationships
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c4">Delegation (Key Element)</div>
+      <div class="card accent-left c4">
+        <table>
+          <tr><th>Element</th><th>Delegability</th><th>Meaning</th></tr>
+          <tr><td><b>Authority</b></td><td>Fully delegated</td><td>Right to command; flows top → bottom</td></tr>
+          <tr><td><b>Responsibility</b></td><td>CANNOT be entirely delegated</td><td>Obligation to perform assigned task</td></tr>
+          <tr><td><b>Accountability</b></td><td>NOT at all delegated</td><td>Answerability for results</td></tr>
+        </table>
+        <div class="alert red">⚠ Decentralisation ≠ Delegation | Decentralisation = more autonomy to subordinates | Delegation = process of assigning authority</div>
+        <small>Challenge of accountability in decentralisation controlled by Balance Scorecard &amp; MIS</small>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c4">Types of Structures</div>
+      <div class="card accent-left c4">
+        <table>
+          <tr><th>Structure</th><th>Advantage</th><th>Limitation</th></tr>
+          <tr><td><b>Functional</b></td><td>Min duplication; economies of scale; low cost; specialisation</td><td>Coordination DIFFICULT for multi-product</td></tr>
+          <tr><td><b>Divisional</b></td><td>Flexibility &amp; initiative; easy growth; new divisions added without disrupting existing</td><td>Costly — duplication of resources</td></tr>
+          <tr><td><b>Formal</b></td><td>Clear authority, accountability, stability</td><td>Rigid</td></tr>
+          <tr><td><b>Informal</b></td><td>Fulfils social needs; speeds up comm.</td><td>Spreads rumours</td></tr>
+        </table>
+        <b>Span of Management:</b> Narrow span → Tall structure | Wide span → Flat structure
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c4">Responsibility Accounting</div>
+      <div class="card accent-left c4">
+        <table>
+          <tr><th>Type</th><th>Basis</th><th>Example</th></tr>
+          <tr><td>Cost Centre</td><td>Ratio Analysis</td><td>Production Dept</td></tr>
+          <tr><td>Revenue Centre</td><td>Revenue</td><td>Marketing Dept</td></tr>
+          <tr><td>Profit Centre</td><td>Revenue + Cost</td><td>Repair &amp; Maintenance Dept</td></tr>
+          <tr><td>Investment Centre</td><td><b>ROI</b> (profit + investments)</td><td>HQ / SBU</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- CH 6: STAFFING -->
+    <div>
+      <div class="sh c6">Ch 6 — Staffing</div>
+      <div class="card accent-left c6">
+        <b>Def:</b> Right person for right job at right time. <span class="kw">Development-career oriented</span>.<br>
+        Inherent part of HRM | Most fundamental &amp; critical | Generic function of management | Line as well as Staff activity.<br>
+        <small>Staffing (small org) | HRM (large org)</small>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c6">Staffing Process</div>
+      <div class="card accent-left c6">
+        <ol style="padding-left:12px">
+          <li>Estimating manpower requirement (basis for all subsequent staffing)</li>
+          <li><span class="tag green">Recruitment</span> — <b>Positive</b> process (attracting candidates)</li>
+          <li><span class="tag red">Selection</span> — <b>Negative</b> process (eliminating unsuitable candidates)</li>
+          <li>Placement &amp; Orientation</li>
+          <li>Training &amp; Development</li>
+          <li>Performance Appraisal</li>
+          <li>Promotion &amp; Career Planning</li>
+          <li>Compensation</li>
+        </ol>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c6">Sources of Recruitment</div>
+      <div class="card accent-left c6">
+        <table>
+          <tr><th>Internal</th><th>External</th></tr>
+          <tr>
+            <td>
+              <b>Promotion</b> — works as tonic, encourages employees<br>
+              <b>Transfer</b> — one post to another
+            </td>
+            <td>
+              <b>Placement Agencies</b> — extensive screening; compile bio data<br>
+              <b>Management Consultancy</b> — middle &amp; top level executives; maintain data bank<br>
+              <b>Campus Recruitment</b> — educational institutions
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c6">Selection — Negative Process</div>
+      <div class="card accent-left c6">
+        Steps: Preliminary screening → Selection tests → Employment interview → Reference check → Selection decision → Medical exam → Job offer → Contract
+        <table style="margin-top:3px">
+          <tr><th>Error Type</th><th>Meaning</th></tr>
+          <tr><td><b>Reject Error</b></td><td>Rejecting candidates who COULD perform successfully (Type I)</td></tr>
+          <tr><td><b>Accept Error</b></td><td>Accepting those who ULTIMATELY perform poorly (Type II)</td></tr>
+        </table>
+        <b>Types of Tests:</b>
+        <ul>
+          <li><b>Trade Test</b> — level of knowledge &amp; proficiency</li>
+          <li><b>Intelligence Test</b> — psychological test</li>
+          <li><b>Selection Test</b> — measures certain characteristics of individual</li>
+        </ul>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c6">Training vs Education</div>
+      <div class="card accent-left c6">
+        <div class="compare">
+          <div class="side left"><div class="label">Training</div>Specific knowledge &amp; skills for a particular job. Narrow scope.</div>
+          <div class="side right"><div class="label">Education</div>Broader: understanding &amp; interpretation of knowledge. Education > Training in scope.</div>
+        </div>
+        <b>Methods:</b>
+        <ul>
+          <li><b>On-the-Job:</b> Job rotation, coaching, apprenticeship</li>
+          <li><b>Off-the-Job:</b> Vestibule training, role playing</li>
+        </ul>
+        <b>Wages:</b> Perquisites = Fringe benefits (car, housing, medical) | Direct Financial = Incentives/bonus/commission
+      </div>
+    </div>
+
+    <!-- CH 7: DIRECTING -->
+    <div>
+      <div class="sh c7">Ch 7 — Directing</div>
+      <div class="card accent-left c7">
+        Initiates actions in org | Every action in org | Tells people what/when/how | Functional foremanship = extension of division of work<br>
+        Key components: <kw>Motivation</kw> + <kw>Leadership</kw>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c7">Motivation</div>
+      <div class="card accent-left c7">
+        <kw>Internal feeling</kw> | Stimulates people to act voluntarily to accomplish org goals<br><br>
+        <b>Maslow's Hierarchy (1943):</b>
+        <table>
+          <tr><th>Need</th><th>Example</th></tr>
+          <tr><td>1. Physiological</td><td>Food, water, shelter</td></tr>
+          <tr><td>2. Safety</td><td>Security, stability</td></tr>
+          <tr><td>3. Social/Love</td><td>Belonging, friendship</td></tr>
+          <tr><td>4. Esteem</td><td>Recognition, respect</td></tr>
+          <tr><td>5. Self-Actualisation</td><td>Fulfilling potential</td></tr>
+        </table>
+        <b>McClelland's Theory (Harvard Psychologist):</b>
+        <ul>
+          <li>N-Ach (Achievement) | N-Pow (Power) | N-Aff (Affiliation) | N-Aut (Autonomy)</li>
+          <li>Pioneered competency approach to HRD &amp; entrepreneurship development</li>
+        </ul>
+        <table>
+          <tr><th>Financial Incentives</th><th>Non-Financial Incentives</th></tr>
+          <tr><td>Pay, bonus, profit sharing, stock options</td><td>Job security, recognition, status, autonomy, job enrichment</td></tr>
+        </table>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c7">Leadership</div>
+      <div class="card accent-left c7">
+        Influencing behaviour → making people strive <b>voluntarily</b> towards org goals.<br>
+        <table>
+          <tr><th>Style</th><th>Characteristic</th></tr>
+          <tr><td><b>Autocratic</b></td><td>Dogmatic; centralised; doesn't want to be contradicted</td></tr>
+          <tr><td><b>Democratic</b></td><td>Control via forces within group; participates subordinates</td></tr>
+          <tr><td><b>Laissez Faire</b></td><td>Free rein; maximum autonomy to subordinates</td></tr>
+        </table>
+        <span class="tag amber">Japanese Companies</span> Paternalistic style — no trade unions needed | employer cares for employees
+        <br><small><b>Stephen Covey:</b> Managers are important but Leaders are VITAL for lasting org success.</small>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c7">Communication</div>
+      <div class="card accent-left c7">
+        <b>Communis</b> (Latin) = Common | <b>Sender</b> = Source of communication<br>
+        Process: <b>Sender → Encoding → Message → Channel → Decoding → Receiver → Feedback</b><br><br>
+        <b>Formal Communication:</b>
+        <ul>
+          <li><b>Downward:</b> Superior → Subordinate (orders, instructions)</li>
+          <li><b>Upward:</b> Subordinate → Superior (feedback, grievances)</li>
+          <li><b>Horizontal/Lateral:</b> Same level</li>
+        </ul>
+        <b>Barriers:</b> Semantic (wrong interpretation) | Psychological (premature evaluation) | Organisational (long chain) | Personal (attitude, emotions)
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c7">Supervision</div>
+      <div class="card accent-left c7">
+        Element of Directing + function performed by supervisor | Guide, friend, philosopher to workers<br>
+        <b>Consumer Forum Composition:</b> State &amp; District → 1 President + 2 members (min 3) | National → 1 President + 4 members
+      </div>
+    </div>
+
+  </div><!-- end grid3 -->
+  <div class="pgnum">Page 2 of 10 — BST CUET 2026 Cheat Sheet</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ PAGE 3 ═══ -->
+<div class="page">
+  <div class="header">
+    <div><h1>BST CUET 2026 ⚡ Cheat Sheet</h1><div class="sub">Controlling · Financial Management · Financial Markets</div></div>
+    <div class="badge">Ch 8–10</div>
+  </div>
+
+  <div class="grid3">
+
+    <!-- CH 8: CONTROLLING -->
+    <div>
+      <div class="sh c8">Ch 8 — Controlling</div>
+      <div class="card accent-left c8">
+        <kw>Indispensable</kw> fn. of management | <kw>Evaluative</kw> — checks if decisions → desired actions | <kw>Backward-looking</kw><br>
+        <b>ROI</b> = basic yardstick in controlling | Planning without Controlling = <b>meaningless</b>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c8">Process of Controlling</div>
+      <div class="card accent-left c8">
+        <ol style="padding-left:12px">
+          <li>Setting performance standards</li>
+          <li>Measurement of actual performance</li>
+          <li>Comparing actual with standards</li>
+          <li>Analysing deviations</li>
+          <li>Taking corrective action</li>
+        </ol>
+        <small>Measurement techniques: Performance observation | Sample checking | Performance reports</small>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c8">Techniques of Control</div>
+      <div class="card accent-left c8">
+        <b>Traditional:</b>
+        <table>
+          <tr><th>Technique</th><th>Key Point</th></tr>
+          <tr><td>Personal Observations</td><td><b>Most traditional</b>; first-hand info; time-consuming</td></tr>
+          <tr><td>Statistical Reports</td><td>Info on various aspects</td></tr>
+          <tr><td>Break-Even Analysis</td><td>Traditional; cost-volume-profit relationship</td></tr>
+          <tr><td>Budgetary Control</td><td>Preparation, comparison, analysis of budgets</td></tr>
+        </table>
+        <b>Modern:</b>
+        <table>
+          <tr><th>Technique</th><th>Key Point</th></tr>
+          <tr><td>ROI</td><td>Basic yardstick; EBIT/Capital Employed × 100</td></tr>
+          <tr><td>Ratio Analysis</td><td>Used in Cost Centre</td></tr>
+          <tr><td>Management Audit</td><td>Systematic appraisal of overall mgmt performance; reviews efficiency &amp; effectiveness</td></tr>
+          <tr><td>MIS</td><td>Management Info System; important comm. tool for planning &amp; controlling</td></tr>
+          <tr><td>PERT / CPM</td><td>Network techniques in planning &amp; controlling</td></tr>
+          <tr><td>Balance Scorecard</td><td>Used for controlling accountability in decentralisation</td></tr>
+        </table>
+        <div class="alert green">⚡ Management by Exception = If you try to control everything, you end up controlling nothing | Deals with SIGNIFICANT deviations (e.g., earning 20% profit, scales by 10%)</div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c8">Planning vs Controlling</div>
+      <div class="card accent-left c8">
+        <table>
+          <tr><th>Planning</th><th>Controlling</th></tr>
+          <tr><td>Prescriptive</td><td>Evaluative</td></tr>
+          <tr><td>Forward-looking</td><td>Backward-looking</td></tr>
+          <tr><td>Sets standards</td><td>Checks against standards</td></tr>
+        </table>
+        Both are two sides of same coin. Closely interrelated. KRA = Key Result Areas.
+      </div>
+    </div>
+
+    <!-- CH 9: FINANCIAL MGMT -->
+    <div>
+      <div class="sh c9">Ch 9 — Financial Management</div>
+      <div class="card accent-left c9">
+        Objective: <kw>Maximise Shareholders' Wealth</kw><br>
+        <b>3 Financial Decisions:</b>
+        <span class="tag blue">Investment</span> <span class="tag green">Financing</span> <span class="tag amber">Dividend</span>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c9">A) Investment Decision (Capital Budgeting)</div>
+      <div class="card accent-left c9">
+        <b>Capital Budgeting</b> = Long-Term Investment Decision<br>
+        <b>Short-term Investment</b> = Working Capital Decision<br>
+        <div class="alert green">✅ R&amp;D Programme &amp; Advertising Campaign = ALSO Capital Budgeting Decisions</div>
+        <b>Working Capital:</b>
+        <table>
+          <tr><th>Level</th><th>Impact</th></tr>
+          <tr><td>High Working Capital</td><td>↑ Liquidity</td></tr>
+          <tr><td>Lower Working Capital</td><td>↑ Reduces Profitability</td></tr>
+        </table>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c9">B) Financing Decision</div>
+      <div class="card accent-left c9">
+        Determines <kw>overall cost of capital</kw> &amp; financial risk.<br>
+        <b>Financial Leverage</b> = Proportion of debt in overall capital<br>
+        <b>Operating Risk</b> = Business Risk → depends on <b>fixed operating costs</b><br>
+        <div class="alert red">⚡ Cost of Debt is LOWER than cost of equity | Increase use of debt → likely to lower overall cost of capital (if cost of equity unaffected)</div>
+        <b>Trading on Equity:</b> Company employs more cheaper debt to enhance EPS<br>
+        <b>Capital Structure (Cap Mix):</b> D/E or D/(E+D)
+        <div class="formula"><span class="var">Cap Employed</span> = D + E | <span class="var">EBIT</span> = Earnings Before Interest & Tax</div>
+        <div class="alert">⚡ ROI > Rate of Interest → Debt ↓ → EPS ↑ (Trading on Equity)</div>
+        <small>Cheapest source of finance = Retained Earnings | Equity → Riskless (in terms of repayment)</small>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c9">C) Dividend Decision</div>
+      <div class="card accent-left c9">
+        <div class="compare">
+          <div class="side left"><div class="label">Stability of Dividend</div>Increase dividend only when CONFIDENCE that earning potential has gone UP (not just current year)</div>
+          <div class="side right"><div class="label">Stability of Earning</div>Company with stable earnings = better positioned to declare increased dividend</div>
+        </div>
+        <div class="alert red">⚠ Stability of Dividend ≠ Stability of Earning</div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c9">Financial Planning &amp; Formulae</div>
+      <div class="card accent-left c9">
+        Financial Planning = typically <kw>3–5 years</kw> | Starts with <b>Sales Forecast</b><br><br>
+        <div class="formula">ROI = (<span class="var">EBIT</span> / Capital Employed) × 100 &nbsp;|&nbsp; Cap Emp = D + E</div>
+        <div class="formula">EPS = <span class="var">EAE</span> / Number of Shares</div>
+        <div class="formula">ICR = <span class="var">EBIT</span> / Interest</div>
+        <div class="formula">BEP = <span class="var">FC</span> / (SP - VC per unit)</div>
+        <div class="formula">Cap Mix = <span class="var">D/E</span> &nbsp;OR&nbsp; D/(E+D)</div>
+        <div class="alert red">⚠ WRONG: ROI = Net Profit/Sales | CORRECT: ROI = EBIT/Capital Employed × 100<br>WRONG: ICR = Net Profit/Interest | CORRECT: ICR = EBIT/Interest</div>
+      </div>
+    </div>
+
+    <!-- CH 10: FINANCIAL MARKETS -->
+    <div>
+      <div class="sh c10">Ch 10 — Financial Markets</div>
+      <div class="card accent-left c10">
+        <div class="compare">
+          <div class="side left"><div class="label">Money Market</div>Short-term funds — up to <b>1 year</b></div>
+          <div class="side right"><div class="label">Capital Market</div>Long-term funds; development banks, commercial banks &amp; stock exchange</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c10">Money Market Instruments</div>
+      <div class="card accent-left c10">
+        <table>
+          <tr><th>Instrument</th><th>Tenure</th><th>Key Feature</th></tr>
+          <tr><td><b>Treasury Bills</b></td><td>Up to 364 days</td><td>Issued by RBI on behalf of govt; <b>most liquid</b>; zero default risk</td></tr>
+          <tr><td><b>Commercial Bill</b></td><td>Bills of Exchange</td><td>Working Capital requirement; self-liquidating; finance credit sales; <span class="warn">NOT sold at discount OR NOT redeemed at par</span></td></tr>
+          <tr><td><b>Call Money</b></td><td><b>1–15 days</b></td><td>Inter-banking; repayable on demand; highly volatile; interest = call rates</td></tr>
+          <tr><td><b>Commercial Papers</b></td><td>15 days – 1 yr</td><td>Financially strong companies; bridge financing; unsecured promissory notes; negotiable</td></tr>
+          <tr><td><b>Certificates of Deposit</b></td><td>Varies</td><td>Bearer form; issued by commercial banks; during tight liquidity</td></tr>
+          <tr><td><b>DFHI</b></td><td>Institution</td><td>Discount Finance House of India → provides liquidity for MM instruments</td></tr>
+        </table>
+        <div class="alert red">⚠ Call Money = 1–15 days ONLY (NOT 1 month)</div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c10">Capital Market</div>
+      <div class="card accent-left c10">
+        <div class="compare">
+          <div class="side left"><div class="label">Primary Market</div>New securities issued; IPO — Initial Public Offering; FPO — Follow-on Public Offer</div>
+          <div class="side right"><div class="label">Secondary Market</div>Existing securities traded; stock market / stock exchange; more liquid; T+2 settlement (since 2003)</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c10">Stock Exchanges &amp; Key Numbers</div>
+      <div class="card accent-left c10">
+        <table>
+          <tr><th>Exchange</th><th>Facts</th></tr>
+          <tr><td><b>BSE</b></td><td>Established <kw>1875</kw>; Recognised <kw>1956</kw>; Oldest in Asia; <b>Sensex = 30 securities</b></td></tr>
+          <tr><td><b>NSE</b></td><td>Incorporated <kw>1992</kw>; Recognised April 1993; Operational <kw>1994</kw>; Cap Market segment Nov 1994; <b>Nifty = 50 securities</b></td></tr>
+          <tr><td><b>SEBI</b></td><td>Established <kw>1988</kw>; Statutory <b>30 Jan 1992</b> (SEBI Act 1992); Head office Mumbai</td></tr>
+        </table>
+        <div class="alert red">⚠ SEBI est. 1988 (NOT 1992) | NSE est. 1992 (NOT 1994) | Sensex = 30 (NOT 50)</div>
+        <table style="margin-top:3px">
+          <tr><th>Depository</th><th>Facts</th></tr>
+          <tr><td><b>NSDL</b></td><td>National Securities Depositories Ltd; <b>1st &amp; largest</b>; JV of IDBI, UTI, NSE</td></tr>
+          <tr><td><b>CDSL</b></td><td>Central Depository Services Ltd; <b>2nd largest</b>; promoted by <b>BSE</b></td></tr>
+        </table>
+        <div class="alert red">⚠ NSDL ≠ promoted by BSE; CDSL = promoted by BSE</div>
+        <small>Total Stock Exchanges in India = <b>22</b> | Demat A/c = Beneficial Owner A/c | T+2 settlement since 2003 | Securities Contract Regulation Act = 1956</small>
+      </div>
+    </div>
+
+  </div><!-- end grid3 -->
+  <div class="pgnum">Page 3 of 10 — BST CUET 2026 Cheat Sheet</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ PAGE 4 ═══ -->
+<div class="page">
+  <div class="header">
+    <div><h1>BST CUET 2026 ⚡ Cheat Sheet</h1><div class="sub">Marketing · Consumer Protection · Entrepreneurship</div></div>
+    <div class="badge">Ch 11–13</div>
+  </div>
+
+  <div class="grid3">
+
+    <!-- CH 11: MARKETING -->
+    <div>
+      <div class="sh c1">Ch 11 — Marketing Management</div>
+      <div class="card accent-left">
+        In modern times → Marketing = <kw>Social Process</kw><br>
+        Needs shaped by culture, personality, religion → <b>Wants</b><br>
+        <b>Pillars of Marketing</b> = Packaging &amp; Labelling
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c1">Marketing Concepts / Philosophies</div>
+      <div class="card accent-left">
+        <table>
+          <tr><th>Concept</th><th>Focus</th><th>Key Point</th></tr>
+          <tr><td><b>Production</b></td><td>Affordability &amp; availability</td><td><b>Oldest</b> philosophy</td></tr>
+          <tr><td><b>Product</b></td><td>Quality features of product</td><td>Product orientation</td></tr>
+          <tr><td><b>Selling</b></td><td>Existing product</td><td>Aggressive selling</td></tr>
+          <tr><td><b>Marketing</b></td><td>Customer satisfaction</td><td>Customer oriented</td></tr>
+          <tr><td><b>Societal</b></td><td>Long-term consumer + societal welfare</td><td>Holistic approach</td></tr>
+        </table>
+        <div class="alert red">⚠ Production Concept ≠ Product Concept — completely different!</div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c1">Marketing Mix — 4 Ps</div>
+      <div class="card accent-left">
+        <b>Product:</b>
+        <ul>
+          <li><b>Branding</b> = giving a name / sign / symbol</li>
+          <li><b>Brand Mark</b> = Recognised but NOT utterable</li>
+          <li><b>Brand</b> = Verbal component (utterable)</li>
+          <li><b>Grading</b> = different categories under same brand (e.g., hair conditioner types)</li>
+        </ul>
+        <b>Price:</b><br>
+        Upper limit = Utility &amp; Demand | Lower limit = Product cost<br>
+        <b>Price Skimming</b> = high price initially for new &amp; unique product<br>
+        Single-most factor to affect Revenue &amp; Profits = <kw>Price</kw>
+        <div class="divider"></div>
+        <b>Place / Physical Distribution:</b>
+        <table>
+          <tr><th>Channel</th><th>Flow</th><th>For</th></tr>
+          <tr><td>Zero Level</td><td>Manufacturer → Consumer</td><td>Direct selling</td></tr>
+          <tr><td>One Level</td><td>Manufacturer → Retailer → Consumer</td><td>—</td></tr>
+          <tr><td>Two Level</td><td>Manufacturer → Wholesaler → Retailer → Consumer</td><td>Consumer goods (soaps, oils, clothes, rice, sugar)</td></tr>
+          <tr><td>Three Level</td><td>Manufacturer → Agent → Wholesaler → Retailer → Consumer</td><td>—</td></tr>
+        </table>
+        <div class="alert green">Warehousing = TIME utility | Transportation = PLACE utility</div>
+        <div class="divider"></div>
+        <b>Promotion:</b><br>
+        <b>Personal Selling</b> = most helpful for industrial buyers or intermediaries (relatively few in number)<br>
+        <b>Labelling:</b>
+        <ul>
+          <li>Simple tags → local unbranded (sugar, wheat, pulses)</li>
+          <li>Complex graphics → branded products</li>
+          <li>Also includes sales promotion: '40% Extra Free', 'Baaton mein dum'</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 12: CONSUMER PROTECTION -->
+    <div>
+      <div class="sh c3">Ch 12 — Consumer Protection</div>
+      <div class="card accent-left c3">
+        <b>CPA 2019</b> → Central Consumer Protection Authority (CCPA)<br>
+        <b>Consumer Awareness:</b> GOI → Dept of Consumer Affairs → <kw>Jago Grahak Jago</kw> campaign<br>
+        <b>CUTS</b> = Consumer Unity and Trust Society → <kw>Jaipur</kw><br>
+        <b>NGOs</b> → own constitution; free from government interference
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c3">6 Consumer Rights</div>
+      <div class="card accent-left c3">
+        <table>
+          <tr><td>1. Right to Safety</td><td>2. Right to Information</td></tr>
+          <tr><td>3. Right to Choose</td><td>4. Right to be Heard</td></tr>
+          <tr><td>5. Right to Seek Redressal</td><td>6. Right to Consumer Education</td></tr>
+        </table>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c3">Three-Tier Dispute Redressal</div>
+      <div class="card accent-left c3">
+        <table>
+          <tr><th>Forum</th><th>Jurisdiction</th><th>Composition</th></tr>
+          <tr><td><b>District Forum</b></td><td>Up to ₹1 crore</td><td>1 President + 2 members (min 3); at least 1 woman member</td></tr>
+          <tr><td><b>State Commission</b></td><td>₹1 crore – ₹10 crore</td><td>1 President + 2 members</td></tr>
+          <tr><td><b>National Commission</b></td><td>Above ₹10 crore</td><td>1 President + 4 members</td></tr>
+        </table>
+        <div class="alert red">⚠ National Commission CANNOT file a complaint before consumer forum — it HEARS!</div>
+        <b>Who can file?</b> Consumer | Registered consumer assoc | Central/State Govt | Group of consumers (Class Action Suit)
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c3">Business Associations</div>
+      <div class="card accent-left c3">
+        <b>FICCI</b> = Federation of Indian Chambers of Commerce &amp; Industry<br>
+        <b>CII</b> = Confederation of Indian Industries<br>
+        Both have code of conduct for members.
+      </div>
+    </div>
+
+    <!-- CH 13: ENTREPRENEURSHIP -->
+    <div>
+      <div class="sh c5">Ch 13 — Entrepreneurship Development</div>
+      <div class="card accent-left c5">
+        <b>Entrepreneur</b> = French origin → <kw>"Entreprende"</kw> = To undertake<br>
+        Entrepreneurship → implies <kw>risk / UNCERTAINTY BEARING</kw><br>
+        Purpose = creation of value for personal profit &amp; social gains (<b>Purposeful Activity</b>)<br>
+        <b>Richard Cantillon</b> = Introduced term 'Entrepreneur' in 18th century → French Economist
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c5">Key Characteristics</div>
+      <div class="card accent-left c5">
+        <ul>
+          <li>High Entras = Primary drivers for entrepreneurial behaviour</li>
+          <li>Persuasion = Eliciting support of others</li>
+          <li>Assertiveness = Conveying vision emphatically</li>
+          <li>Effectuation = Leveraging available means</li>
+          <li><b>Informal approach</b> to task (NOT formal)</li>
+          <li><span class="warn">Laissez leadership = NOT a characteristic of entrepreneurship</span></li>
+        </ul>
+        <b>Skills required:</b> Opportunity Scouting | Negotiation | Inductive logic driven<br>
+        NOT: People management<br>
+        <b>KASH</b> = Knowledge, Attitude, Skills, Habits | <b>EDI</b> = Set of 15 competencies
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c5">Motivation — McClelland</div>
+      <div class="card accent-left c5">
+        <table>
+          <tr><th>Factor</th><th>Entrepreneur</th><th>Manager</th></tr>
+          <tr><td>Primary Motivation</td><td><kw>Achievement</kw></td><td><kw>Power</kw></td></tr>
+          <tr><td>Primary Economic Reward</td><td>Profit</td><td>Salary</td></tr>
+          <tr><td>Risk</td><td>Moderate &amp; Calculated (NOT high)</td><td>Calculated</td></tr>
+          <tr><td>Approach</td><td>Informal; Inductive logic</td><td>Formal; Deductive logic &amp; research</td></tr>
+        </table>
+        <div class="alert red">⚠ GENERALLY believed Entrepreneurs take HIGH risk — ACTUALLY they take MODERATE &amp; CALCULATED risk</div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="sh c5">India Statistics &amp; Key Points</div>
+      <div class="card accent-left c5">
+        <table>
+          <tr><th>Category</th><th>%</th></tr>
+          <tr><td>Women Entrepreneurs</td><td>8%</td></tr>
+          <tr><td>SC Entrepreneurs</td><td>8%</td></tr>
+          <tr><td>ST Entrepreneurs</td><td>4%</td></tr>
+          <tr><td>OBC Entrepreneurs</td><td>44%</td></tr>
+        </table>
+        <ul>
+          <li>Developed countries → need entrepreneurs to <b>sustain</b> development</li>
+          <li>Developing countries → need entrepreneurs to <b>initiate</b> process of development</li>
+          <li>Key enabler/disabler of entrepreneurship = prevailing Socio-Cultural milieu</li>
+          <li>Inadequacy of Domestic Demand = Demand side vicious cycle</li>
+        </ul>
+        <div class="alert green">Production Cycle ≠ Business Cycle | Production Cycle = raw material → finished goods | Business Cycle = Boom / Depression in economy</div>
+        <small>ITES = Information Technology Enabled Services: data processing, customer support, tech support, consulting</small>
+      </div>
+    </div>
+
+  </div><!-- end grid3 -->
+  <div class="pgnum">Page 4 of 10 — BST CUET 2026 Cheat Sheet</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ PAGE 5 ═══ -->
+<div class="page">
+  <div class="header">
+    <div><h1>BST CUET 2026 ⚡ Cheat Sheet</h1><div class="sub">Top 54 Common Mistakes &amp; Corrections · All Chapters</div></div>
+    <div class="badge">Mistakes</div>
+  </div>
+
+  <div class="grid2">
+    <div>
+      <div class="sh c1">Management, Principles &amp; Planning Mistakes</div>
+      <div class="card accent-left">
+        <table>
+          <tr><th>#</th><th style="color:var(--acc)">❌ Wrong Belief</th><th style="color:var(--acc6)">✅ Correct Fact</th></tr>
+          <tr><td>1</td><td>Organising includes "How work will be done"</td><td>Organising = WHO will do task ONLY; "How" = NOT organising</td></tr>
+          <tr><td>2</td><td>Management is only a Science</td><td>Management is BOTH Art AND Science</td></tr>
+          <tr><td>3</td><td>Plant Supt / Dept Head = Top Level</td><td>Plant Supt / Dept Head = Middle Level | Only Supt = Supervisory</td></tr>
+          <tr><td>4</td><td>Middle level responsible for workers</td><td>Middle level responsible for first-line managers — NOT workers</td></tr>
+          <tr><td>5</td><td>Responsibility can be completely delegated</td><td>Responsibility = CANNOT be entirely delegated | Accountability = NOT at all</td></tr>
+          <tr><td>6</td><td>Rule of Thumb is efficient</td><td>Rule of Thumb = Trial &amp; Error = INEFFICIENT; Taylor replaced with science</td></tr>
+          <tr><td>7</td><td>Taylor wrote about administrative efficiency</td><td>Taylor = Production efficiency | Fayol = Managerial efficiency</td></tr>
+          <tr><td>8</td><td>Taylor joined Bethlehem to implement Sc. Mgmt</td><td>Taylor joined Bethlehem to introduce Piece Rate Wage System</td></tr>
+          <tr><td>9</td><td>Division of Work = only for manufacturing</td><td>Division of Work applies to ALL kinds of work</td></tr>
+          <tr><td>10</td><td>Unity of Direction = Unity of Command</td><td>Unity of Command = one boss (Jeopardy if violated) | Unity of Direction = one plan, one head</td></tr>
+          <tr><td>11</td><td>Principles are universal laws</td><td>Principles = CONTINGENT — vary by situation; less than perfect</td></tr>
+          <tr><td>12</td><td>Harmony not Discord = just keeping peace</td><td>Requires COMPLETE MENTAL REVOLUTION from both management AND workers</td></tr>
+          <tr><td>13</td><td>Assembly line invented by Henry Ford</td><td>Assembly line DISCOVERED by Taylor; used by Ford for Model-T</td></tr>
+          <tr><td>14</td><td>Planning only concerned with "what to do"</td><td>Planning = BOTH ends AND means (What + How)</td></tr>
+          <tr><td>15</td><td>Policies are objectives</td><td>Policies are NOT objectives; they are guidelines for decision making</td></tr>
+          <tr><td>16</td><td>Planning related to many functions</td><td>Planning closely related to Creativity &amp; Innovation ONLY</td></tr>
+          <tr><td>17</td><td>Planning effective without controlling</td><td>Planning without Controlling is MEANINGLESS</td></tr>
+          <tr><td>18</td><td>Programme = Procedure</td><td>Programme = detailed statements (obj + policy + procedure + resources + budget) | Procedure = steps only</td></tr>
+          <tr><td>19</td><td>Higher mgmt orientation = Training</td><td>Higher management orientation programmes = METHOD (Type of Plan)</td></tr>
+          <tr><td>20</td><td>Decentralisation = Delegation</td><td>Decentralisation = giving more autonomy (NOT delegation)</td></tr>
+          <tr><td>21</td><td>Functional structure best for multi-product</td><td>Functional = DIFFICULT coordination for multi-product | Divisional = EASY</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <div class="sh c2">Staffing, Directing, Controlling Mistakes</div>
+      <div class="card accent-left c2">
+        <table>
+          <tr><th>#</th><th style="color:var(--acc)">❌ Wrong Belief</th><th style="color:var(--acc6)">✅ Correct Fact</th></tr>
+          <tr><td>22</td><td>Recruitment = Selection</td><td>Recruitment = POSITIVE (attracting) | Selection = NEGATIVE (eliminating)</td></tr>
+          <tr><td>23</td><td>Reject Error = rejecting wrong candidates</td><td>Reject Error = rejecting candidates who COULD perform | Accept Error = accepting those who perform poorly</td></tr>
+          <tr><td>24</td><td>Training = Education</td><td>Education = broader than training; understanding &amp; interpretation of knowledge</td></tr>
+          <tr><td>25</td><td>Staffing = only recruitment</td><td>Staffing = 3 aspects: Recruitment + Selection + Training</td></tr>
+          <tr><td>26</td><td>Motivation ≠ Stimulation</td><td>Stimulates → Motivation | Internal feeling; stimulating people to act = Motivation</td></tr>
+          <tr><td>27</td><td>Trade unions necessary in Japanese companies</td><td>Japanese = Paternalistic style | NO need for trade unions (harmony, not discord)</td></tr>
+          <tr><td>28</td><td>Communication = just sending message</td><td>Communication = two-way process including feedback | Sender = Source</td></tr>
+          <tr><td>29</td><td>Controlling = negative, backward function</td><td>Controlling = INDISPENSABLE, EVALUATIVE, forward-looking in correction</td></tr>
+          <tr><td>30</td><td>ROI = Revenue on Investment</td><td>ROI = RETURN on Investment | Formula: EBIT/Capital Employed × 100</td></tr>
+          <tr><td>31</td><td>Personal observations = modern method</td><td>Personal observations = MOST TRADITIONAL method; time-consuming</td></tr>
+        </table>
+      </div>
+      <div class="divider"></div>
+      <div class="sh c3">Financial Management &amp; Markets Mistakes</div>
+      <div class="card accent-left c3">
+        <table>
+          <tr><th>#</th><th style="color:var(--acc)">❌ Wrong</th><th style="color:var(--acc6)">✅ Correct</th></tr>
+          <tr><td>32</td><td>Production Cycle = Business Cycle</td><td>Production Cycle ≠ Business Cycle (completely different!)</td></tr>
+          <tr><td>33</td><td>Cost of equity &lt; cost of debt</td><td>Cost of DEBT is LOWER than cost of equity</td></tr>
+          <tr><td>34</td><td>Capital budgeting = only fixed assets</td><td>R&amp;D Programme &amp; Advertising Campaign = ALSO Capital Budgeting</td></tr>
+          <tr><td>35</td><td>Financial planning = 1-2 years</td><td>Financial planning = 3-5 years</td></tr>
+          <tr><td>36</td><td>Stability of dividend = same dividend always</td><td>Increase dividend only when confidence earning potential has gone UP (not just this year)</td></tr>
+          <tr><td>37</td><td>Highest EPS = most debt is best</td><td>EPS maximised when ROI &gt; Rate of Interest on debt (Trading on Equity)</td></tr>
+          <tr><td>38</td><td>Commercial Bills sold at discount</td><td>Commercial bills NOT sold at discount OR NOT redeemed at par</td></tr>
+          <tr><td>39</td><td>NSE established in 1994</td><td>NSE established 1992, recognised 1993, OPERATIONAL 1994</td></tr>
+          <tr><td>40</td><td>BSE recognised in 1992</td><td>BSE established 1875; recognised 1956</td></tr>
+          <tr><td>41</td><td>SEBI statutory body since 1988</td><td>SEBI est. 1988; became STATUTORY 30 Jan 1992</td></tr>
+          <tr><td>42</td><td>Call Money = up to 1 month</td><td>Call Money = 1–15 days ONLY</td></tr>
+          <tr><td>43</td><td>Demat A/c = Share Application A/c</td><td>Demat A/c = Beneficial Owner A/c | Share Application = Personal A/c</td></tr>
+        </table>
+      </div>
+      <div class="divider"></div>
+      <div class="sh c4">Marketing, Consumer &amp; Entrepreneurship Mistakes</div>
+      <div class="card accent-left c4">
+        <table>
+          <tr><th>#</th><th style="color:var(--acc)">❌ Wrong</th><th style="color:var(--acc6)">✅ Correct</th></tr>
+          <tr><td>44</td><td>Branding = just a logo</td><td>Branding = name or sign or symbol | Brand Mark = recognised but NOT utterable | Brand = Verbal</td></tr>
+          <tr><td>45</td><td>Labelling = only identification</td><td>Labelling ALSO includes sales promotion ('40% Extra Free')</td></tr>
+          <tr><td>46</td><td>Production Concept = Product Concept</td><td>Production = Affordability &amp; availability | Product = quality features | Selling = existing product</td></tr>
+          <tr><td>47</td><td>Warehousing = place utility</td><td>Warehousing = TIME utility | Transportation = PLACE utility</td></tr>
+          <tr><td>48</td><td>Two level channel = industrial goods</td><td>Two Level = consumer goods (soaps, oils, clothes, rice, sugar)</td></tr>
+          <tr><td>49</td><td>NGOs controlled by government</td><td>NGOs = own constitution; free from government interference</td></tr>
+          <tr><td>50</td><td>National Commission can file complaint</td><td>National Commission CANNOT file — it HEARS complaints</td></tr>
+          <tr><td>51</td><td>Laissez leadership = entrepreneurship characteristic</td><td>Laissez leadership = NOT a characteristic of entrepreneurship</td></tr>
+          <tr><td>52</td><td>Entrepreneurs take HIGH risk</td><td>Entrepreneurs take MODERATE &amp; CALCULATED risk</td></tr>
+          <tr><td>53</td><td>Production Cycle = Business Cycle</td><td>NEVER confuse these — completely different concepts</td></tr>
+          <tr><td>54</td><td>Primary motivation of entrepreneur = Power</td><td>Entrepreneur = Achievement motivation | Manager = Power motivation</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="pgnum">Page 5 of 10 — BST CUET 2026 Cheat Sheet</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ PAGE 6 ═══ -->
+<div class="page">
+  <div class="header">
+    <div><h1>BST CUET 2026 ⚡ Cheat Sheet</h1><div class="sub">Key Numbers · Formulas · Pairs Never to Confuse · Abbreviations · Authors</div></div>
+    <div class="badge">Quick Facts</div>
+  </div>
+
+  <div class="grid3">
+
+    <div>
+      <div class="sh c1">All Important Numbers</div>
+      <div class="card accent-left">
+        <table>
+          <tr><th>Item</th><th>Number / Fact</th></tr>
+          <tr><td>Sensex securities</td><td><kw>30</kw></td></tr>
+          <tr><td>Nifty securities</td><td><kw>50</kw></td></tr>
+          <tr><td>T+ Settlement</td><td><kw>T+2 (since 2003)</kw></td></tr>
+          <tr><td>Total Stock Exchanges India</td><td><kw>22</kw></td></tr>
+          <tr><td>Financial Planning period</td><td><kw>3–5 years</kw></td></tr>
+          <tr><td>Maslow's classic paper</td><td><kw>1943</kw></td></tr>
+          <tr><td>Principles of Sc. Mgmt (Taylor)</td><td><kw>1911</kw></td></tr>
+          <tr><td>SEBI established</td><td><kw>1988</kw></td></tr>
+          <tr><td>SEBI Statutory (SEBI Act)</td><td><kw>30 Jan 1992</kw></td></tr>
+          <tr><td>BSE established</td><td><kw>1875</kw></td></tr>
+          <tr><td>BSE recognised</td><td><kw>1956</kw></td></tr>
+          <tr><td>NSE incorporated</td><td><kw>1992</kw></td></tr>
+          <tr><td>NSE recognised</td><td>April 1993</td></tr>
+          <tr><td>NSE operational</td><td><kw>1994</kw></td></tr>
+          <tr><td>NSE Cap Market segment</td><td>Nov 1994</td></tr>
+          <tr><td>NSE Trading Platform</td><td>Jun 2000</td></tr>
+          <tr><td>Sec. Contracts Regulation Act</td><td>1956</td></tr>
+          <tr><td>Compulsory licensing to</td><td>6 industries</td></tr>
+          <tr><td>Public sector limited to</td><td>4 industries (strategic)</td></tr>
+          <tr><td>District Forum (min members)</td><td>3 (1 President + 2)</td></tr>
+          <tr><td>National Commission</td><td>1 President + 4 members</td></tr>
+          <tr><td>Women Entrepreneurs</td><td>8%</td></tr>
+          <tr><td>SC Entrepreneurs</td><td>8%</td></tr>
+          <tr><td>ST Entrepreneurs</td><td>4%</td></tr>
+          <tr><td>OBC Entrepreneurs</td><td>44%</td></tr>
+          <tr><td>Call Money tenure</td><td>1–15 days</td></tr>
+          <tr><td>Commercial Papers maturity</td><td>15 days – 1 year</td></tr>
+          <tr><td>Six Sigma defects</td><td>3–4 per million</td></tr>
+          <tr><td>Fayol's book (English)</td><td>1949 (French: 1917)</td></tr>
+          <tr><td>Taylor's Shop Mgmt pub.</td><td>1911</td></tr>
+        </table>
+        <div class="alert red">⚠ Number-Based Traps:<br>Sensex = 30 (NOT 50) | T+2 (NOT T+3) | SEBI = 1988 (NOT 1992) | NSE = 1992 (NOT 1994) | Financial planning = 3-5 yr (NOT 1-2) | Total exchanges = 22 (NOT 20) | Maslow's paper = 1943 (NOT 1963) | Principles of Sc. Mgmt = 1911 (NOT 1913)</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sh c2">Pairs Never to Confuse</div>
+      <div class="card accent-left c2">
+        <table>
+          <tr><th>Concept A</th><th>Concept B</th></tr>
+          <tr><td><b>Recruitment</b> = POSITIVE (attracts)</td><td><b>Selection</b> = NEGATIVE (eliminates)</td></tr>
+          <tr><td><b>Brand</b> = verbal / utterable</td><td><b>Brand Mark</b> = recognised but NOT utterable</td></tr>
+          <tr><td><b>Unity of Command</b> = one boss (Jeopardy)</td><td><b>Unity of Direction</b> = one plan, one head</td></tr>
+          <tr><td><b>Responsibility</b> = partial delegation</td><td><b>Accountability</b> = NO delegation</td></tr>
+          <tr><td><b>Training</b> = specific skills</td><td><b>Education</b> = broader understanding</td></tr>
+          <tr><td><b>Warehousing</b> = time utility</td><td><b>Transportation</b> = place utility</td></tr>
+          <tr><td><b>Production Cycle</b> = raw material → finished goods</td><td><b>Business Cycle</b> = boom / depression</td></tr>
+          <tr><td><b>Decentralisation</b> = more autonomy</td><td><b>Delegation</b> = assigning authority</td></tr>
+          <tr><td><b>Reject Error</b> = rejecting good candidate</td><td><b>Accept Error</b> = accepting bad candidate</td></tr>
+          <tr><td><b>NSDL</b> = 1st / largest (IDBI, UTI, NSE)</td><td><b>CDSL</b> = 2nd (promoted by BSE)</td></tr>
+          <tr><td><b>Planning</b> = prescriptive, forward</td><td><b>Controlling</b> = evaluative, backward</td></tr>
+          <tr><td><b>Stability of Dividend</b> = long-term confidence</td><td><b>Stability of Earning</b> = consistent profits</td></tr>
+          <tr><td><b>Production Concept</b> = affordability &amp; availability</td><td><b>Product Concept</b> = quality features</td></tr>
+          <tr><td><b>Entrepreneur motivation</b> = Achievement</td><td><b>Manager motivation</b> = Power</td></tr>
+          <tr><td><b>Staffing</b> (small org)</td><td><b>HRM</b> (large org)</td></tr>
+          <tr><td><b>Taylor</b> = Shop Floor, Production</td><td><b>Fayol</b> = Top Management, Managerial</td></tr>
+        </table>
+      </div>
+      <div class="divider"></div>
+      <div class="sh c5">All Formulae</div>
+      <div class="card accent-left c5">
+        <div class="formula">ROI = (<span class="var">EBIT</span> ÷ Capital Employed) × 100 &nbsp;|&nbsp; Cap Emp = D + E</div>
+        <div class="formula">EPS = <span class="var">EAE</span> ÷ Number of Shares</div>
+        <div class="formula">ICR = <span class="var">EBIT</span> ÷ Interest</div>
+        <div class="formula">BEP = <span class="var">FC</span> ÷ (SP − VC per unit)</div>
+        <div class="formula">Cap Mix = <span class="var">D/E</span> &nbsp;OR&nbsp; D/(E+D)</div>
+        <div class="formula">Financial Leverage = Proportion of <span class="var">Debt</span> in Overall Capital</div>
+        <div class="alert red">⚠ Formula Mistakes:<br>ROI ≠ Net Profit/Sales | EPS ≠ Net Profit/Sales | ICR ≠ Net Profit/Interest | BEP ≠ FC/SP | Cap Mix ≠ E/D</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sh c3">Authors &amp; Their Works</div>
+      <div class="card accent-left c3">
+        <table>
+          <tr><th>Author</th><th>Work / Contribution</th><th>Year</th></tr>
+          <tr><td><b>F.W. Taylor</b></td><td>Principles of Scientific Management</td><td>1911</td></tr>
+          <tr><td><b>F.W. Taylor</b></td><td>Shop Management (whole book)</td><td>—</td></tr>
+          <tr><td><b>Henri Fayol</b></td><td>General &amp; Industrial Management</td><td>1917 (Fr) / 1949 (En)</td></tr>
+          <tr><td><b>Abraham Maslow</b></td><td>Hierarchy of Needs (Classic Paper)</td><td>1943</td></tr>
+          <tr><td><b>Koontz &amp; O'Donnell</b></td><td>Definition in Controlling; Definition of Management</td><td>—</td></tr>
+          <tr><td><b>Richard Cantillon</b></td><td>Introduced term 'Entrepreneur'</td><td>18th Century</td></tr>
+          <tr><td><b>David McClelland</b></td><td>Competency approach to HRD; N-Ach/Pow/Aff/Aut</td><td>Harvard Psych.</td></tr>
+          <tr><td><b>Stephen Covey</b></td><td>Management Consultant: Leaders VITAL for lasting success</td><td>—</td></tr>
+        </table>
+      </div>
+      <div class="divider"></div>
+      <div class="sh c7">Key Abbreviations</div>
+      <div class="card accent-left c7">
+        <table>
+          <tr><th>Abbr.</th><th>Full Form &amp; Key Fact</th></tr>
+          <tr><td>BSE</td><td>Bombay Stock Exchange — est. 1875</td></tr>
+          <tr><td>NSE</td><td>National Stock Exchange — est. 1992, operational 1994</td></tr>
+          <tr><td>SEBI</td><td>Securities &amp; Exchange Board of India — 1988, statutory 1992</td></tr>
+          <tr><td>NSDL</td><td>National Securities Depositories Ltd — 1st/largest; JV of IDBI, UTI, NSE</td></tr>
+          <tr><td>CDSL</td><td>Central Depository Services Ltd — 2nd largest; promoted by BSE</td></tr>
+          <tr><td>DFHI</td><td>Discount Finance House of India — liquidity for MM instruments</td></tr>
+          <tr><td>PERT</td><td>Programme Evaluation &amp; Review Technique — network technique</td></tr>
+          <tr><td>CPM</td><td>Critical Path Method — network technique</td></tr>
+          <tr><td>MIS</td><td>Management Information System — important comm. tool planning &amp; controlling</td></tr>
+          <tr><td>ROI</td><td>Return on Investment — EBIT/Capital Employed × 100</td></tr>
+          <tr><td>EPS</td><td>Earnings Per Share — EAE/No. of shares</td></tr>
+          <tr><td>BEP</td><td>Break Even Point — FC/(SP-VC per unit)</td></tr>
+          <tr><td>ICR</td><td>Interest Coverage Ratio — EBIT/Interest</td></tr>
+          <tr><td>ASME</td><td>American Society of Mechanical Engineers — Taylor was President</td></tr>
+          <tr><td>FICCI</td><td>Federation of Indian Chambers of Commerce &amp; Industry</td></tr>
+          <tr><td>CII</td><td>Confederation of Indian Industries</td></tr>
+          <tr><td>CCPA</td><td>Central Consumer Protection Authority — under CPA 2019</td></tr>
+          <tr><td>CUTS</td><td>Consumer Unity and Trust Society — Jaipur</td></tr>
+          <tr><td>AGMARK</td><td>Agricultural Marketing — quality mark</td></tr>
+          <tr><td>ITES</td><td>Info Technology Enabled Services — data proc, customer support</td></tr>
+          <tr><td>KASH</td><td>Knowledge, Attitude, Skills, Habits — entrepreneurship</td></tr>
+          <tr><td>COR</td><td>Capital Output Ratio — relates GNSP and Cap. Formation</td></tr>
+        </table>
+      </div>
+      <div class="divider"></div>
+      <div class="sh c8">High-Yield ⚡ Extras</div>
+      <div class="card accent-left c8">
+        <ul>
+          <li>Management by Exception = "If you try to control everything, you end up controlling nothing"</li>
+          <li>Assembly line discovered by Taylor → used by FORD for Model-T</li>
+          <li>Operations Research developed in World War II to optimise deployment of war material</li>
+          <li>Latest development in Scientific Management → LEAN Manufacturing</li>
+          <li>Kaizen = Change for better / improvement | Six Sigma = Data-driven; 3-4 defects per million</li>
+          <li>Bernerd → called communication "foundation of all activities" → No. 1 management problem today</li>
+          <li>Neo Classical → Human Relation Approach → Hawthorne Studies → Human factor</li>
+          <li>Classical Mgmt → Rational economic view (Scientific Mgmt + Administrative Principles + Bureaucratic Org)</li>
+          <li>Demat A/c = Beneficial Owner A/c | Share Application A/c = Personal A/c</li>
+          <li>Blue Revolution → Fish Production</li>
+          <li>Paternalistic style of management → Japanese Companies</li>
+          <li>Cheapest source of finance → Retained Earnings</li>
+          <li>Supervision → Element of Directing + function performed by supervisor</li>
+          <li>BHEL developed Ranipura in Haridwar (Uttaranchal) → PSU</li>
+          <li>Lead time = Effective time lag b/w placement of material and actual receipt</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="pgnum">Page 6 of 10 — BST CUET 2026 Cheat Sheet</div>
+</div>
+
+</body>
+</html>
